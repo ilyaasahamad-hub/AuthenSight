@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --canvas-bg: #F8FAFC;
+    --surface-bg: #FFFFFF;
+    --hairline-border: #E2E8F0;
+    --obsidian-text: #0F172A;
+    --primary-petrol: #0E7490;
+    --jade-mint: #059669;
+    --crimson-rose: #E11D48;
+    --warm-ochre: #D97706;
+    --electric-cyan: #06B6D4;
+    --lime-forensic: #10B981;
+  }
+
+  .dark {
+    --canvas-bg: #0B0F19;
+    --surface-bg: #111827;
+    --hairline-border: #1F2937;
+    --obsidian-text: #F9FAFB;
+    --primary-petrol: #06B6D4;
+  }
+
+  body {
+    background-color: var(--canvas-bg);
+    color: var(--obsidian-text);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+}
+
+/* Forensic dot grid background pattern for canvas/viewport */
+.forensic-grid {
+  background-size: 20px 20px;
+  background-image: radial-gradient(circle, #CBD5E1 1px, transparent 1px);
+}
+
+.dark .forensic-grid {
+  background-size: 20px 20px;
+  background-image: radial-gradient(circle, #1E293B 1px, transparent 1px);
+}
+
+.forensic-grid-dense {
+  background-size: 10px 10px;
+  background-image: radial-gradient(circle, #94A3B8 0.75px, transparent 0.75px);
+}
+
+.dark .forensic-grid-dense {
+  background-size: 10px 10px;
+  background-image: radial-gradient(circle, #334155 0.75px, transparent 0.75px);
+}
+
+/* Custom hairline scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #374151;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Laser scanline vertical glow */
+.laser-beam {
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 182, 212, 0) 0%,
+    rgba(6, 182, 212, 0.25) 50%,
+    rgba(6, 182, 212, 0.95) 96%,
+    #22D3EE 100%
+  );
+  box-shadow: 0 0 16px 4px rgba(6, 182, 212, 0.8), 0 0 32px 8px rgba(6, 182, 212, 0.4);
+}
+
+/* Hologram iridescent shimmer simulation */
+.hologram-shimmer {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(6, 182, 212, 0.4) 25%,
+    rgba(217, 70, 239, 0.35) 50%,
+    rgba(245, 158, 11, 0.3) 75%,
+    rgba(16, 185, 129, 0.25) 100%
+  );
+  background-size: 200% 200%;
+  animation: shimmerMove 4s ease infinite;
+}
+
+@keyframes shimmerMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Loupe magnifying lens border & crosshair */
+.loupe-lens {
+  box-shadow: 0 0 0 2px #06B6D4, 0 10px 25px -5px rgba(6, 182, 212, 0.4), 0 8px 10px -6px rgba(6, 182, 212, 0.2);
+}
+
+/* Print Stylesheet for Audit Dossier */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
