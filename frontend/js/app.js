@@ -5,9 +5,58 @@
  */
 
 // Dynamically route to backend API
-const API_BASE = (window.location.origin && window.location.origin.includes(":8000")) 
-    ? "" 
-    : "http://127.0.0.1:8000";
+const API_BASE = (function() {
+    if (window.location.protocol === "file:") {
+        return "http://127.0.0.1:8000";
+    }
+    // If running on a dedicated frontend dev server (e.g. Live Server port 5500, Vite port 5173), route to port 8000
+    if (["5500", "5173", "3000"].includes(window.location.port)) {
+        return "http://127.0.0.1:8000";
+    }
+    // Same origin (e.g. FastAPI server on http://127.0.0.1:8000 or http://localhost:8000)
+    return "";
+})();
+window.API_BASE = API_BASE;
+
+function showBackendConnectionStatus(isOnline) {
+    const statusEl = document.querySelector(".system-status-indicator");
+    if (statusEl) {
+        if (isOnline) {
+            statusEl.innerHTML = `
+                <span class="status-indicator online"></span>
+                <span class="status-text">BACKEND ONLINE (127.0.0.1:8000)</span>
+            `;
+        } else {
+            statusEl.innerHTML = `
+                <span class="status-indicator" style="background:#ef4444;box-shadow:0 0 8px #ef4444;"></span>
+                <span class="status-text" style="color:#dc2626;">BACKEND OFFLINE — Run python run.py</span>
+            `;
+        }
+    }
+
+    let alertBanner = document.getElementById("backendOfflineBanner");
+    if (!isOnline) {
+        if (!alertBanner) {
+            alertBanner = document.createElement("div");
+            alertBanner.id = "backendOfflineBanner";
+            alertBanner.style.cssText = "background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:10px 16px;border-radius:10px;margin-bottom:16px;font-size:13px;display:flex;align-items:center;justify-content:space-between;";
+            alertBanner.innerHTML = `
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span><strong>Backend not reachable on http://127.0.0.1:8000:</strong> Ensure the FastAPI server is running with <code>python run.py</code> or <code>uvicorn main:app --reload</code>.</span>
+                </div>
+                <button onclick="location.reload()" style="background:#dc2626;color:white;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-weight:600;">Retry</button>
+            `;
+            const mainContent = document.querySelector(".app-main") || document.body;
+            const firstCard = document.querySelector(".page-body-container") || document.querySelector(".card") || mainContent.firstChild;
+            if (firstCard && firstCard.parentNode) {
+                firstCard.parentNode.insertBefore(alertBanner, firstCard);
+            }
+        }
+    } else {
+        if (alertBanner) alertBanner.remove();
+    }
+}
 
 // Global state
 let currentFile = null;
@@ -55,6 +104,7 @@ async function loadDashboardMetrics() {
         const res = await fetch(`${API_BASE}/api/stats`);
         if (!res.ok) throw new Error("Failed to fetch dashboard metrics");
         const stats = await res.json();
+        showBackendConnectionStatus(true);
 
         const kpiTotal = document.getElementById("kpiTotal");
         const kpiGenuine = document.getElementById("kpiGenuine");
@@ -75,6 +125,7 @@ async function loadDashboardMetrics() {
         if (kpiRiskPct) kpiRiskPct.textContent = `${stats.high_risk_percentage}%`;
     } catch (err) {
         console.error("Error loading metrics:", err);
+        showBackendConnectionStatus(false);
     }
 }
 

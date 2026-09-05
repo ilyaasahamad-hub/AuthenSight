@@ -1,7 +1,7 @@
 """
 AuthenSight - AI Fake Identity & Document Screening System
 FastAPI Backend Application Entrypoint
-Cleanly decoupled from static frontend.
+Decoupled backend engine serving static frontend and REST APIs.
 """
 
 import os
@@ -11,27 +11,52 @@ from datetime import datetime
 from typing import Optional, List
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
-from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-# Ensure backend directory is on Python path
+# Ensure backend directory and services are in Python path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
-from services.ocr import extract_ocr_data
-from services.mrz import validate_mrz_data, parse_td3_mrz
-from services.forensics import perform_forensic_analysis
-from services.face_verification import verify_face_biometrics
-from services.risk_engine import evaluate_risk
+# Add parent directory if needed
+PARENT_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
+if PARENT_DIR not in sys.path:
+    sys.path.insert(0, PARENT_DIR)
 
-# Directories
-UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
-FRONTEND_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "frontend"))
+# Resolve FRONTEND_DIR reliably whether run from root or backend/
+if os.path.exists(os.path.join(BASE_DIR, "frontend")):
+    FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+elif os.path.exists(os.path.join(PARENT_DIR, "frontend")):
+    FRONTEND_DIR = os.path.join(PARENT_DIR, "frontend")
+else:
+    FRONTEND_DIR = os.path.abspath("frontend")
+
+# Resolve UPLOAD_DIR
+if os.path.exists(os.path.join(BASE_DIR, "uploads")):
+    UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+elif os.path.exists(os.path.join(PARENT_DIR, "backend", "uploads")):
+    UPLOAD_DIR = os.path.join(PARENT_DIR, "backend", "uploads")
+else:
+    UPLOAD_DIR = os.path.abspath("uploads")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Import services with resilient relative/package fallback
+try:
+    from backend.services.ocr import extract_ocr_data
+    from backend.services.mrz import validate_mrz_data, parse_td3_mrz
+    from backend.services.forensics import perform_forensic_analysis
+    from backend.services.face_verification import verify_face_biometrics
+    from backend.services.risk_engine import evaluate_risk
+except ImportError:
+    from services.ocr import extract_ocr_data
+    from services.mrz import validate_mrz_data, parse_td3_mrz
+    from services.forensics import perform_forensic_analysis
+    from services.face_verification import verify_face_biometrics
+    from services.risk_engine import evaluate_risk
 
 app = FastAPI(
     title="AuthenSight | AI Fake Identity & Document Screening",
@@ -39,25 +64,31 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS: Enables frontend to be hosted on any port or domain
+# Robust CORS Configuration: Allows API calls from file://, localhost:*, 127.0.0.1:*, etc.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_origin_regex=".*",
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Mount Static Assets from decoupled frontend/
-if os.path.exists(os.path.join(FRONTEND_DIR, "css")):
-    app.mount("/css", StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")), name="css")
-if os.path.exists(os.path.join(FRONTEND_DIR, "js")):
-    app.mount("/js", StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")), name="js")
-if os.path.exists(os.path.join(FRONTEND_DIR, "images")):
-    app.mount("/images", StaticFiles(directory=os.path.join(FRONTEND_DIR, "images")), name="images")
+css_dir = os.path.join(FRONTEND_DIR, "css")
+js_dir = os.path.join(FRONTEND_DIR, "js")
+images_dir = os.path.join(FRONTEND_DIR, "images")
 
-# Backwards compatibility mounts
+if os.path.exists(css_dir):
+    app.mount("/css", StaticFiles(directory=css_dir), name="css")
+if os.path.exists(js_dir):
+    app.mount("/js", StaticFiles(directory=js_dir), name="js")
+if os.path.exists(images_dir):
+    app.mount("/images", StaticFiles(directory=images_dir), name="images")
+
+# Mount both /frontend and /static for universal backwards compatibility
 if os.path.exists(FRONTEND_DIR):
+    app.mount("/frontend", StaticFiles(directory=FRONTEND_DIR), name="frontend")
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 # Mount Uploads
@@ -182,12 +213,13 @@ SEED_HISTORY = [
 for item in SEED_HISTORY:
     SCREENINGS_STORE[item["screening_id"]] = item
 
-# ----------------- PAGE ROUTES (Serving Decoupled Frontend) ----------------- #
+# ----------------- PAGE ROUTES ----------------- #
 
 @app.get("/")
 @app.get("/index.html")
 async def page_dashboard():
-    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    return FileResponse(index_path)
 
 @app.get("/screening")
 @app.get("/screening.html")
@@ -208,7 +240,29 @@ async def page_reports():
 async def page_report_id(screening_id: str):
     return FileResponse(os.path.join(FRONTEND_DIR, "report.html"))
 
-# ----------------- API ENDPOINTS ----------------- #
+# Fallback routes for assets requested from /report/ sub-paths
+@app.get("/report/css/{asset_name:path}")
+async def report_css_fallback(asset_name: str):
+    file_path = os.path.join(FRONTEND_DIR, "css", asset_name)
+    if os.path.exists(file_path):
+        return FileResponse(file_path)
+    raise HTTPException(status_code=404, detail="CSS not found")
+
+@app.get("/report/js/{asset_name:path}")
+async def report_js_fallback(asset_name: str):
+    file_path = os.path.join(FRONTEND_DIR, "js", asset_name)
+    if os.path.exists(file_path):
+        return FileResponse(file_path)
+    raise HTTPException(status_code=404, detail="JS not found")
+
+@app.get("/report/images/{asset_name:path}")
+async def report_images_fallback(asset_name: str):
+    file_path = os.path.join(FRONTEND_DIR, "images", asset_name)
+    if os.path.exists(file_path):
+        return FileResponse(file_path)
+    raise HTTPException(status_code=404, detail="Image not found")
+
+# ----------------- REST API ENDPOINTS ----------------- #
 
 ALLOWED_MIME_TYPES = {
     "image/jpeg", "image/png", "image/webp", "image/tiff", "application/pdf"
@@ -260,6 +314,13 @@ async def api_screen_document(
             with open(preset_abs, "rb") as pf:
                 file_bytes = pf.read()
             filename = preset_file
+        else:
+            # Fallback to static
+            alt_preset = os.path.join(PARENT_DIR, "static", "images", "presets", preset_file)
+            if os.path.exists(alt_preset):
+                with open(alt_preset, "rb") as pf:
+                    file_bytes = pf.read()
+                filename = preset_file
     else:
         raise HTTPException(status_code=400, detail="No document file or preset selected.")
 
@@ -358,3 +419,17 @@ async def api_get_stats():
         "suspicious_percentage": round((suspicious / total * 100) if total else 0, 1),
         "high_risk_percentage": round((high_risk / total * 100) if total else 0, 1)
     })
+
+
+if __name__ == "__main__":
+    import uvicorn
+    print("======================================================================")
+    print("  AuthenSight — AI Fake Identity & Document Screening System")
+    print("======================================================================")
+    print("  Local Server       : http://127.0.0.1:8000")
+    print("  Screening Engine   : http://127.0.0.1:8000/screening.html")
+    print("  History Audit Log  : http://127.0.0.1:8000/history.html")
+    print("  Swagger API Docs   : http://127.0.0.1:8000/docs")
+    print("======================================================================")
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
