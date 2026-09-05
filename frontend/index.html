@@ -8,9 +8,77 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3.5">
+    <!-- High-Priority Sage & Lime Theme Variables -->
+    <style>
+        :root {
+            --bg-base: #edf2e6;
+            --bg-sidebar: #f5f8f0;
+            --bg-card: #ffffff;
+            --bg-card-subtle: #f8faf5;
+            --accent-lime: #98e539;
+            --accent-lime-light: #a9ee4f;
+            --accent-lime-bg: #ecfadc;
+            --border-subtle: #e1e7d8;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+        }
+        html, body, body.theme-navy, body.theme-sage-lime {
+            background-color: #edf2e6 !important;
+            color: #111827 !important;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
+        .app-main, .page-content-wrapper, .dashboard-page, .screening-page, .history-page, .report-page {
+            background-color: #edf2e6 !important;
+        }
+        .app-sidebar {
+            background-color: #f5f8f0 !important;
+            border-right: 1px solid #e1e7d8 !important;
+        }
+        .main-header {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #e1e7d8 !important;
+        }
+        .card, .metric-card, .risk-dist-card, .performance-chart-card, .recent-screenings-card, .demo-presets-card, .upload-card, .report-action-card, .filter-bar-card, .table-card {
+            background-color: #ffffff !important;
+            border: 1px solid #e1e7d8 !important;
+            box-shadow: 0 2px 12px rgba(22, 34, 46, 0.04) !important;
+        }
+        .dashboard-hero {
+            background: #ffffff !important;
+            border: 1px solid #e1e7d8 !important;
+        }
+        .nav-link.active {
+            background: #98e539 !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 14px rgba(152, 229, 57, 0.35) !important;
+            font-weight: 700 !important;
+        }
+        .btn-primary {
+            background: #98e539 !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 14px rgba(152, 229, 57, 0.35) !important;
+            border: 1px solid #b7f26f !important;
+            font-weight: 700 !important;
+        }
+        .btn-primary:hover {
+            background: #a9ee4f !important;
+            color: #0f172a !important;
+        }
+        .metric-card.metric-genuine {
+            background: #ecfadc !important;
+            border-color: #c8ebb0 !important;
+        }
+        .chart-bar-rect {
+            background-color: #facc15 !important;
+        }
+        .pill-tab.active, .pill-tab.pill-tab-danger.active {
+            background-color: #1f252e !important;
+            color: #ffffff !important;
+        }
+    </style>
 </head>
-<body class="theme-navy">
+<body class="theme-sage-lime">
     <!-- Top Security Classification Bar -->
     <div class="security-classification-banner" id="securityBanner">
         <div class="banner-inner">
