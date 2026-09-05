@@ -1,27 +1,24 @@
 {
-  "name": "authensight-forensic-scanner",
+  "name": "authensight-ai-screening",
+  "version": "2.0.0",
+  "description": "AuthenSight - AI Fake Identity & Document Screening System (FastAPI + Vanilla HTML5/CSS3/JS)",
   "private": true,
-  "version": "1.0.0",
-  "type": "module",
   "scripts": {
-    "start": "uvicorn main:app --reload --port 8000",
-    "serve": "python -m uvicorn main:app --reload --port 8000",
-    "dev": "uvicorn main:app --reload --port 8000"
+    "start": "python run.py",
+    "serve": "python -m uvicorn backend.main:app --reload --port 8000",
+    "dev": "python -m uvicorn backend.main:app --reload --port 8000"
   },
-  "dependencies": {
-    "canvas-confetti": "^1.9.4",
-    "clsx": "^2.1.1",
-    "framer-motion": "^11.18.2",
-    "lucide-react": "^1.41.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.5.5"
-  },
+  "keywords": [
+    "fastapi",
+    "ai-document-screening",
+    "mrz-validation",
+    "forensics",
+    "authensight"
+  ],
+  "author": "AuthenSight Team",
+  "license": "MIT",
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "vite": "^5.4.14"
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^7.3.6"
   }
 }
