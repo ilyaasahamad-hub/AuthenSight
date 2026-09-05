@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthenSight — Verification History & Audit Log</title>
+    <meta name="description" content="AuthenSight - Verification History & Audit Log. Searchable register of screened credentials and forensic classifications.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-navy">
+    <div class="security-classification-banner" id="securityBanner">
+        <div class="banner-inner">
+            <span class="security-badge"><span class="pulse-dot"></span> RESTRICTED // OFFICIAL IMMIGRATION & BORDER CONTROL USE ONLY</span>
+            <span class="banner-text">AuthenSight Sentinel AI v2.4 • ICAO Doc 9303 Compliant Screening Protocol</span>
+            <span class="system-time" id="systemClock">2026-09-05 00:00:00 UTC</span>
+        </div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">Authen<span class="text-accent">Sight</span></h1>
+                    <span class="brand-subtitle">IDGUARD AI SECURITY</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">PRIMARY NAVIGATION</div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="index.html" class="nav-link" id="navDashboard">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                            </span>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="screening.html" class="nav-link" id="navScreening">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M7 7h10M7 17h10"/><circle cx="12" cy="12" r="9"/></svg>
+                            </span>
+                            <span class="nav-label">Document Screening</span>
+                            <span class="nav-pill">AI LIVE</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="history.html" class="nav-link active" id="navHistory">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </span>
+                            <span class="nav-label">Verification History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="report.html" class="nav-link" id="navReports">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </span>
+                            <span class="nav-label">Reports & Dossiers</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">SYSTEM & AUDIT</div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="#privacyNotice" class="nav-link" id="navPrivacy" onclick="showPrivacyModal(event)">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </span>
+                            <span class="nav-label">Security & Privacy</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="officer-card">
+                    <div class="officer-avatar">OFF</div>
+                    <div class="officer-info">
+                        <div class="officer-name">Agent I. Ahamad</div>
+                        <div class="officer-role">Border Control Officer #4092</div>
+                    </div>
+                </div>
+                <div class="system-status-indicator">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">ENGINES ONLINE (ELA / OCR-B / MRZ)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <!-- Header Bar -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle navigation">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="header-breadcrumb">
+                        <span class="bc-app">AuthenSight</span>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current" id="breadcrumbCurrent">Verification History</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <a href="screening.html" class="btn btn-primary btn-sm btn-quick-screen" id="btnQuickScreen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>Start New Screening</span>
+                    </a>
+                    <div class="badge-status-cluster">
+                        <span class="badge badge-outline">PORT 8000</span>
+                                            </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <div class="page-content-wrapper">
+                <div class="history-page">
+                    <div class="page-header-flex">
+                        <div>
+                            <h2 class="page-title">Verification History & Audit Log</h2>
+                            <p class="page-subtitle">Central registry of processed identity credentials, risk classifications, and anomaly detections</p>
+                        </div>
+                        <div class="page-header-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="exportHistoryCSV()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                <span>Export CSV Audit</span>
+                            </button>
+                            <a href="screening.html" class="btn btn-primary btn-sm">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                <span>New Screening</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar Card -->
+                    <div class="card filter-bar-card">
+                        <div class="filters-row">
+                            <div class="filter-group search-group">
+                                <label for="historySearchInput" class="filter-label">SEARCH RECORDS</label>
+                                <div class="search-input-wrapper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="historySearchInput" class="form-input" placeholder="Search by Document ID, Subject Name, or Number..." oninput="filterHistoryTable()">
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="historyStatusFilter" class="filter-label">RISK STATUS</label>
+                                <select id="historyStatusFilter" class="form-select" onchange="filterHistoryTable()">
+                                    <option value="ALL">All Classifications</option>
+                                    <option value="GENUINE">Genuine</option>
+                                    <option value="SUSPICIOUS">Suspicious</option>
+                                    <option value="HIGH RISK">High Risk</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="historyDocFilter" class="filter-label">CREDENTIAL TYPE</label>
+                                <select id="historyDocFilter" class="form-select" onchange="filterHistoryTable()">
+                                    <option value="ALL">All Document Types</option>
+                                    <option value="Passport">Passport</option>
+                                    <option value="Visa">Visa</option>
+                                    <option value="Identity Card">Identity Card</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Table Card -->
+                    <div class="card table-card">
+                        <div class="table-responsive">
+                            <table class="data-table" id="fullHistoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>SCREENING ID</th>
+                                        <th>DOCUMENT TYPE</th>
+                                        <th>SUBJECT NAME</th>
+                                        <th>DOCUMENT NO</th>
+                                        <th>TIMESTAMP</th>
+                                        <th>RISK SCORE</th>
+                                        <th>STATUS</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fullHistoryBody">
+                                    <tr>
+                                        <td colspan="8" class="text-center py-4">
+                                            <div class="table-loading-spinner"></div>
+                                            <span>Loading screening logs...</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="app-footer">
+                <div class="footer-left">
+                    <p>© 2026 AuthenSight Security Systems. AI Fake Identity & Document Screening System.</p>
+                </div>
+                <div class="footer-right">
+                    <span class="disclaimer-text">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-tiny"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        AI-Assisted Screening Result: For statutory identity determination, corroborate with national consular registries.
+                    </span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFullHistory();
+        });
+    </script>
+</body>
+</html>

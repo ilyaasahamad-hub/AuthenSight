@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthenSight — Forensic Screening Dossier</title>
+    <meta name="description" content="AuthenSight - Official Forensic Credential Authentication and Tamper Audit Report.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-navy">
+    <div class="report-page">
+        <div class="report-toolbar no-print">
+            <div class="toolbar-left">
+                <a href="screening.html" class="btn btn-secondary btn-sm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>Back to Screening</span>
+                </a>
+                <span class="toolbar-dossier-id">Report ID: <strong id="topReportId">SCR-LATEST</strong></span>
+            </div>
+            <div class="toolbar-right">
+                <button class="btn btn-secondary btn-sm" onclick="window.print()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    <span>Print Report</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="downloadReportJSON()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download Report</span>
+                </button>
+                <a href="screening.html" class="btn btn-primary btn-sm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Start New Screening</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Official Printable Dossier Sheet -->
+        <div class="printable-dossier-sheet" id="printableDossier">
+            <!-- Official Header -->
+            <div class="dossier-official-header">
+                <div class="gov-seal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <circle cx="12" cy="11" r="3"/>
+                    </svg>
+                </div>
+                <div class="gov-header-text">
+                    <h3>DEPARTMENT OF IMMIGRATION & BORDER SECURITY</h3>
+                    <h4>FORENSIC CREDENTIAL AUTHENTICATION & TAMPER AUDIT DOSSIER</h4>
+                    <p>Generated via AuthenSight Sentinel AI v2.4 • Standard ICAO Doc 9303 Verification Protocol</p>
+                </div>
+                <div class="gov-qr-code">
+                    <div class="qr-placeholder">
+                        <span>ICAO 9303</span>
+                        <div class="qr-bars"></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="dossier-divider">
+
+            <!-- Header Summary Grid -->
+            <div class="dossier-summary-grid">
+                <div class="summary-cell">
+                    <span class="cell-label">SCREENING ID</span>
+                    <strong class="cell-val font-mono" id="repScreeningId">SCR-2026-00000</strong>
+                </div>
+                <div class="summary-cell">
+                    <span class="cell-label">DATE & TIME</span>
+                    <strong class="cell-val" id="repDateTime">2026-09-05 00:00:00</strong>
+                </div>
+                <div class="summary-cell">
+                    <span class="cell-label">DOCUMENT TYPE</span>
+                    <strong class="cell-val" id="repDocType">Passport</strong>
+                </div>
+                <div class="summary-cell">
+                    <span class="cell-label">OVERALL RISK SCORE</span>
+                    <strong class="cell-val font-accent" id="repRiskScore">--% (LEVEL)</strong>
+                </div>
+                <div class="summary-cell">
+                    <span class="cell-label">VERIFICATION STATUS</span>
+                    <span class="status-badge" id="repStatusBadge">STATUS</span>
+                </div>
+            </div>
+
+            <!-- Document Visual & Suspect Regions Row -->
+            <div class="dossier-evidence-layout">
+                <div class="evidence-doc-preview">
+                    <div class="section-heading">INSPECTED CREDENTIAL GRAPHIC</div>
+                    <div class="doc-image-frame">
+                        <img id="repDocumentImage" src="images/presets/sample_genuine_passport.jpg" alt="Screened Document Preview">
+                    </div>
+                </div>
+                <div class="evidence-findings">
+                    <div class="section-heading">DETECTED ANOMALIES & FORENSIC JUSTIFICATION</div>
+                    <div class="findings-box" id="repFindingsBox">
+                        <ul class="findings-list" id="repReasonsList">
+                            <!-- Populated dynamically -->
+                        </ul>
+                    </div>
+
+                    <div class="section-heading mt-3">BIOMETRIC FACE COMPARISON</div>
+                    <div class="face-verdict-box" id="repFaceVerdict">
+                        <span id="repFaceText">Face likeness verified against document portrait.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparative Tables -->
+            <div class="dossier-tables-grid">
+                <!-- OCR Extracted Information -->
+                <div class="dossier-table-block">
+                    <div class="section-heading">1. OCR DEMOGRAPHIC EXTRACTION</div>
+                    <table class="dossier-table">
+                        <tr><th>Full Name:</th><td id="repOcrName">--</td></tr>
+                        <tr><th>Date of Birth:</th><td id="repOcrDob">--</td></tr>
+                        <tr><th>Document Number:</th><td id="repOcrDocNum" class="font-mono">--</td></tr>
+                        <tr><th>Nationality:</th><td id="repOcrNat">--</td></tr>
+                        <tr><th>Gender:</th><td id="repOcrGender">--</td></tr>
+                        <tr><th>Issue Date:</th><td id="repOcrIssue">--</td></tr>
+                        <tr><th>Expiry Date:</th><td id="repOcrExpiry">--</td></tr>
+                    </table>
+                </div>
+
+                <!-- MRZ & Forensics Breakdown -->
+                <div class="dossier-table-block">
+                    <div class="section-heading">2. MRZ & FORENSIC VERIFICATION GATES</div>
+                    <table class="dossier-table">
+                        <tr><th>MRZ Detected:</th><td id="repMrzDetected">PASS</td></tr>
+                        <tr><th>MRZ Modulus Checksum:</th><td id="repMrzChecksum">PASS</td></tr>
+                        <tr><th>Visual Data Consistency:</th><td id="repMrzDataMatch">PASS</td></tr>
+                        <tr><th>Text Manipulation:</th><td id="repForensicText">PASS</td></tr>
+                        <tr><th>Photo Manipulation:</th><td id="repForensicPhoto">PASS</td></tr>
+                        <tr><th>Copy-Paste Splicing:</th><td id="repForensicCopy">PASS</td></tr>
+                        <tr><th>Compression Anomalies (ELA):</th><td id="repForensicCompression">PASS</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Officer Sign-Off Block -->
+            <div class="officer-signoff-block">
+                <div class="signoff-column">
+                    <span class="signoff-label">EXAMINING OFFICER:</span>
+                    <span class="signoff-line">Agent I. Ahamad (Badge #4092)</span>
+                    <span class="signoff-sub">Port of Entry Immigration Inspection Command</span>
+                </div>
+                <div class="signoff-column">
+                    <span class="signoff-label">DIGITAL SIGNATURE & AUDIT SEAL:</span>
+                    <span class="signature-stamp">AUTHENSIGHT-SHA256: 8F32C019B829</span>
+                    <span class="signoff-sub">Cryptographically signed under ICAO Doc 9303 Border Protocol</span>
+                </div>
+            </div>
+
+            <div class="dossier-footer-note">
+                NOTICE: This document is an AI-assisted analytical finding generated for authorized border and homeland security screening. Secondary physical forensic examination is mandated for all cases flagged as SUSPICIOUS or HIGH RISK.
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadReportDossier();
+        });
+    </script>
+</body>
+</html>

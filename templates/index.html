@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthenSight — Document Screening & Risk Analytics</title>
+    <meta name="description" content="AuthenSight - AI Fake Identity & Document Screening System. High-precision screening for immigration and border security.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-navy">
+    <!-- Top Security Classification Bar -->
+    <div class="security-classification-banner" id="securityBanner">
+        <div class="banner-inner">
+            <span class="security-badge"><span class="pulse-dot"></span> RESTRICTED // OFFICIAL IMMIGRATION & BORDER CONTROL USE ONLY</span>
+            <span class="banner-text">AuthenSight Sentinel AI v2.4 • ICAO Doc 9303 Compliant Screening Protocol</span>
+            <span class="system-time" id="systemClock">2026-09-05 00:00:00 UTC</span>
+        </div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">Authen<span class="text-accent">Sight</span></h1>
+                    <span class="brand-subtitle">IDGUARD AI SECURITY</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">PRIMARY NAVIGATION</div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="index.html" class="nav-link active" id="navDashboard">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                            </span>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="screening.html" class="nav-link" id="navScreening">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12h20M7 7h10M7 17h10"/><circle cx="12" cy="12" r="9"/></svg>
+                            </span>
+                            <span class="nav-label">Document Screening</span>
+                            <span class="nav-pill">AI LIVE</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="history.html" class="nav-link" id="navHistory">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </span>
+                            <span class="nav-label">Verification History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="report.html" class="nav-link" id="navReports">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </span>
+                            <span class="nav-label">Reports & Dossiers</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">SYSTEM & AUDIT</div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="#privacyNotice" class="nav-link" id="navPrivacy" onclick="showPrivacyModal(event)">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </span>
+                            <span class="nav-label">Security & Privacy</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="officer-card">
+                    <div class="officer-avatar">OFF</div>
+                    <div class="officer-info">
+                        <div class="officer-name">Agent I. Ahamad</div>
+                        <div class="officer-role">Border Control Officer #4092</div>
+                    </div>
+                </div>
+                <div class="system-status-indicator">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">ENGINES ONLINE (ELA / OCR / MRZ)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <!-- Header Bar -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle navigation">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="header-breadcrumb">
+                        <span class="bc-app">AuthenSight</span>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current" id="breadcrumbCurrent">Immigration Overview</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <a href="screening.html" class="btn btn-primary btn-sm btn-quick-screen" id="btnQuickScreen">
+                        <span>Start New Screening</span>
+                        <span style="font-weight: 800; font-size: 14px;">→</span>
+                    </a>
+                    <div class="badge-status-cluster">
+                        <span class="badge badge-outline">PORT 8000</span>
+                                            </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <div class="page-content-wrapper">
+                <div class="dashboard-page">
+                    <!-- Hero Banner -->
+                    <div class="dashboard-hero">
+                        <div class="hero-left">
+                            <div class="hero-badge">
+                                <span class="pulse-dot-green"></span>
+                                <span>AI FORENSIC VERIFICATION ACTIVE</span>
+                            </div>
+                            <h2 class="hero-title">Authen<span class="text-accent">Sight</span> // Document Intelligence</h2>
+                            <p class="hero-subtitle">Access your port of entry risk overview, anomaly telemetry, and screening dossiers</p>
+                        </div>
+                        <div class="hero-actions">
+                            <a href="screening.html" class="btn btn-primary btn-lg" id="dashboardStartBtn">
+                                <span>Start Screening</span>
+                                <span style="font-size: 18px; margin-left: 2px;">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 4 Metric Cards (Matching Top Overview in Reference Screenshot) -->
+                    <div class="metrics-grid">
+                        <div class="metric-card metric-total">
+                            <div class="metric-header">
+                                <span class="metric-label">TOTAL SCREENED</span>
+                                <span class="metric-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                </span>
+                            </div>
+                            <div class="metric-value-row">
+                                <span class="metric-value" id="kpiTotal">...</span>
+                                <span class="metric-trend trend-neutral">Class Total</span>
+                            </div>
+                            <div class="metric-footer">
+                                <span>Passports, Visas, National ID Cards</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card metric-risk">
+                            <div class="metric-header">
+                                <span class="metric-label">HIGH RISK</span>
+                                <span class="metric-icon icon-risk">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                </span>
+                            </div>
+                            <div class="metric-value-row">
+                                <span class="metric-value text-danger" id="kpiHighRisk">...</span>
+                                <span class="metric-trend trend-danger" id="kpiHighRiskPct">--%</span>
+                            </div>
+                            <div class="metric-footer">
+                                <span>Critical tampering, ELA or MRZ violation</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card metric-suspicious">
+                            <div class="metric-header">
+                                <span class="metric-label">NEED ATTENTION</span>
+                                <span class="metric-icon icon-suspicious">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </div>
+                            <div class="metric-value-row">
+                                <span class="metric-value text-suspicious" id="kpiSuspicious">...</span>
+                                <span class="metric-trend trend-warning" id="kpiSuspiciousPct">--%</span>
+                            </div>
+                            <div class="metric-footer">
+                                <span>High plus moderate risk cases</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card metric-genuine">
+                            <div class="metric-header">
+                                <span class="metric-label">GENUINE / VERIFIED</span>
+                                <span class="metric-icon icon-genuine">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </div>
+                            <div class="metric-value-row">
+                                <span class="metric-value text-genuine" id="kpiGenuine">...</span>
+                                <span class="metric-trend trend-positive" id="kpiGenuinePct">--%</span>
+                            </div>
+                            <div class="metric-footer">
+                                <span>Passed all ICAO MRZ & forensic gates</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Middle Analytics Grid (Matching Risk Distribution + Subject Bar Chart in Screenshot) -->
+                    <div class="dashboard-analytics-grid">
+                        <!-- Left: Document Risk Distribution -->
+                        <div class="risk-dist-card">
+                            <div class="dist-header-row">
+                                <h3 class="dist-title">Document Risk Distribution</h3>
+                                <span class="dist-meta">Average Risk 38.7%</span>
+                            </div>
+                            <div class="risk-distribution-list">
+                                <div class="dist-item">
+                                    <div class="dist-label-col">
+                                        <span class="dist-dot dot-low"></span>
+                                        <span>Low <span class="dist-range">0-39%</span></span>
+                                    </div>
+                                    <div class="dist-bar-track">
+                                        <div class="dist-bar-fill fill-low" style="width: 62%;"></div>
+                                    </div>
+                                    <div class="dist-values">31 <span>62%</span></div>
+                                </div>
+                                <div class="dist-item">
+                                    <div class="dist-label-col">
+                                        <span class="dist-dot dot-mod"></span>
+                                        <span>Moderate <span class="dist-range">40-69%</span></span>
+                                    </div>
+                                    <div class="dist-bar-track">
+                                        <div class="dist-bar-fill fill-mod" style="width: 22%;"></div>
+                                    </div>
+                                    <div class="dist-values">11 <span>22%</span></div>
+                                </div>
+                                <div class="dist-item">
+                                    <div class="dist-label-col">
+                                        <span class="dist-dot dot-high"></span>
+                                        <span>High <span class="dist-range">70-100%</span></span>
+                                    </div>
+                                    <div class="dist-bar-track">
+                                        <div class="dist-bar-fill fill-high" style="width: 16%;"></div>
+                                    </div>
+                                    <div class="dist-values">8 <span>16%</span></div>
+                                </div>
+                            </div>
+                            <div class="dist-footer-strip">
+                                <span>Average Verification Confidence</span>
+                                <strong>81.2%</strong>
+                            </div>
+                        </div>
+
+                        <!-- Right: Performance by Document Type (Yellow Bars matching screenshot) -->
+                        <div class="performance-chart-card">
+                            <div class="dist-header-row">
+                                <h3 class="dist-title">Credential Performance</h3>
+                                <span class="dist-meta">Class average and flagged ratio</span>
+                            </div>
+                            <div class="bar-chart-viewport">
+                                <div class="chart-column">
+                                    <div class="chart-bar-rect" style="height: 105px;"></div>
+                                    <span class="chart-column-label">Passports</span>
+                                    <span class="chart-column-sub">30 Screened</span>
+                                </div>
+                                <div class="chart-column">
+                                    <div class="chart-bar-rect" style="height: 90px;"></div>
+                                    <span class="chart-column-label">Visas</span>
+                                    <span class="chart-column-sub">11 Screened</span>
+                                </div>
+                                <div class="chart-column">
+                                    <div class="chart-bar-rect" style="height: 98px;"></div>
+                                    <span class="chart-column-label">ID Cards</span>
+                                    <span class="chart-column-sub">9 Screened</span>
+                                </div>
+                            </div>
+                            <div class="dist-footer-strip">
+                                <span>Multi-Modal Accuracy</span>
+                                <strong>99.4%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1-Click Evaluation Presets Tray -->
+                    <div class="card card-accent-strip demo-presets-card">
+                        <div class="card-header-flex">
+                            <div>
+                                <h3 class="card-title">⚡ 1-Click Evaluation Test Presets</h3>
+                                <p class="card-desc">Instantly evaluate the AI Screening Pipeline with pre-calibrated sample documents</p>
+                            </div>
+                            <span class="badge badge-accent">IMMIGRATION SCENARIOS</span>
+                        </div>
+                        <div class="demo-preset-buttons">
+                            <button class="btn-preset btn-preset-genuine" onclick="launchPresetScreening('genuine')">
+                                <span class="preset-badge">GENUINE</span>
+                                <div class="preset-info">
+                                    <strong>Standard Indian Passport</strong>
+                                    <span>Valid MRZ, unblemished guilloche background, authentic face match</span>
+                                </div>
+                                <span class="preset-arrow">→</span>
+                            </button>
+                            <button class="btn-preset btn-preset-warning" onclick="launchPresetScreening('tampered_dob')">
+                                <span class="preset-badge">SUSPICIOUS</span>
+                                <div class="preset-info">
+                                    <strong>Altered Date of Birth</strong>
+                                    <span>Visual DOB modified to 2004 vs MRZ 1998, font kerning anomaly</span>
+                                </div>
+                                <span class="preset-arrow">→</span>
+                            </button>
+                            <button class="btn-preset btn-preset-danger" onclick="launchPresetScreening('photo_tampering')">
+                                <span class="preset-badge">HIGH RISK</span>
+                                <div class="preset-info">
+                                    <strong>Spliced Portrait Photo</strong>
+                                    <span>ELA compression edge discontinuity & face likeness mismatch</span>
+                                </div>
+                                <span class="preset-arrow">→</span>
+                            </button>
+                            <button class="btn-preset btn-preset-danger" onclick="launchPresetScreening('invalid_mrz')">
+                                <span class="preset-badge">HIGH RISK</span>
+                                <div class="preset-info">
+                                    <strong>Corrupted MRZ Checksum</strong>
+                                    <span>ICAO Doc 9303 modulus 10 weighted check digit violation</span>
+                                </div>
+                                <span class="preset-arrow">→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Screenings Table with Filter Pills matching reference screenshot -->
+                    <div class="card recent-screenings-card">
+                        <div class="card-header-flex">
+                            <div>
+                                <h3 class="card-title">Documents Requiring Attention</h3>
+                                <p class="card-desc">Ranked by forensic risk score and optical tamper telemetry</p>
+                            </div>
+                            <div class="table-filter-pills-row">
+                                <button class="pill-tab active" onclick="filterDashboardStatus('ALL', this)">All records</button>
+                                <button class="pill-tab pill-tab-danger" onclick="filterDashboardStatus('HIGH RISK', this)">High risk</button>
+                                <button class="pill-tab" onclick="filterDashboardStatus('SUSPICIOUS', this)">Moderate</button>
+                                <button class="pill-tab" onclick="filterDashboardStatus('GENUINE', this)">Low</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="recentScreeningsTable">
+                                <thead>
+                                    <tr>
+                                        <th>DOCUMENT ID</th>
+                                        <th>DOCUMENT TYPE</th>
+                                        <th>SUBJECT NAME</th>
+                                        <th>TIMESTAMP</th>
+                                        <th>RISK SCORE</th>
+                                        <th>STATUS</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentScreeningsBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="table-loading-spinner"></div>
+                                            <span>Loading screening records...</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Footer -->
+            <footer class="app-footer">
+                <div class="footer-left">
+                    <p>© 2026 AuthenSight Security Systems. AI Fake Identity & Document Screening System.</p>
+                </div>
+                <div class="footer-right">
+                    <span class="disclaimer-text">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-tiny"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        AI-Assisted Screening Result: For statutory identity determination, corroborate with national consular registries.
+                    </span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Security & Privacy Modal -->
+    <div class="modal-backdrop" id="privacyModal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Security, Privacy & Legal Compliance Notice</span>
+                </div>
+                <button class="modal-close-btn" onclick="closePrivacyModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h4>1. AI-Assisted Advisory Nature</h4>
+                <p>AuthenSight operates as an automated forensic advisory tool designed to surface evidence of physical and digital document tampering, MRZ format corruption, and biometric mismatches. Final immigration actions must comply with standard operational procedures.</p>
+                <h4>2. Data Protection & Ephemeral Ingestion</h4>
+                <p>Document biometric records and scanned graphics are processed ephemerally for screening verification. Uploaded identity images are stored in secure local sandboxes for officer audit and are not transferred to untrusted third-party cloud aggregators.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePrivacyModal()">Acknowledge & Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        let allRecentRecords = [];
+
+        async function initDashboard() {
+            await loadDashboardMetrics();
+            await fetchAndRenderRecent();
+        }
+
+        async function fetchAndRenderRecent() {
+            const tbody = document.getElementById("recentScreeningsBody");
+            if (!tbody) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/history?limit=15`);
+                if (!res.ok) throw new Error("Failed to fetch records");
+                allRecentRecords = await res.json();
+                renderFilteredRecords(allRecentRecords);
+            } catch (err) {
+                console.error("Error loading recent records:", err);
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load recent screening records.</td></tr>`;
+            }
+        }
+
+        function renderFilteredRecords(records) {
+            const tbody = document.getElementById("recentScreeningsBody");
+            if (!tbody) return;
+
+            if (!records.length) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No screening records found for selected filter.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = records.map(rec => {
+                const isHigh = rec.risk_score >= 70;
+                const isMed = rec.risk_score >= 40 && rec.risk_score < 70;
+                const pillClass = isHigh ? "high" : isMed ? "med" : "low";
+                const name = (rec.ocr && rec.ocr.name) ? rec.ocr.name : "N/A";
+                const reportUrl = `report.html?id=${rec.screening_id}`;
+                return `
+                    <tr>
+                        <td class="font-mono"><strong>${rec.screening_id}</strong></td>
+                        <td>${rec.document_type || "Passport"}</td>
+                        <td><strong>${name}</strong></td>
+                        <td>${rec.date_time || rec.date || "Just now"}</td>
+                        <td>
+                            <span class="table-risk-pill ${pillClass}">
+                                ${rec.risk_score}% ${rec.status}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge ${isHigh ? 'high-risk' : isMed ? 'suspicious' : 'genuine'}">
+                                ${rec.status}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="${reportUrl}" class="table-action-link">
+                                <span>Inspect</span> <span>→</span>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function filterDashboardStatus(status, btnElement) {
+            document.querySelectorAll(".table-filter-pills-row .pill-tab").forEach(p => p.classList.remove("active"));
+            if (btnElement) btnElement.classList.add("active");
+
+            if (status === "ALL") {
+                renderFilteredRecords(allRecentRecords);
+            } else {
+                const filtered = allRecentRecords.filter(r => (r.status || "").toUpperCase() === status);
+                renderFilteredRecords(filtered);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", initDashboard);
+    </script>
+</body>
+</html>

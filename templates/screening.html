@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuthenSight — Document Screening & AI Analysis</title>
+    <meta name="description" content="AuthenSight - Document Screening Station. Multi-spectral AI forensic analysis, ICAO Doc 9303 MRZ validation, and face likeness inspection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-navy">
+    <div class="security-classification-banner" id="securityBanner">
+        <div class="banner-inner">
+            <span class="security-badge"><span class="pulse-dot"></span> RESTRICTED // OFFICIAL IMMIGRATION & BORDER CONTROL USE ONLY</span>
+            <span class="banner-text">AuthenSight Sentinel AI v2.4 • ICAO Doc 9303 Compliant Screening Protocol</span>
+            <span class="system-time" id="systemClock">2026-09-05 00:00:00 UTC</span>
+        </div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">Authen<span class="text-accent">Sight</span></h1>
+                    <span class="brand-subtitle">IDGUARD AI SECURITY</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">PRIMARY NAVIGATION</div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="index.html" class="nav-link" id="navDashboard">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                            </span>
+                            <span class="nav-label">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="screening.html" class="nav-link active" id="navScreening">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M7 7h10M7 17h10"/><circle cx="12" cy="12" r="9"/></svg>
+                            </span>
+                            <span class="nav-label">Document Screening</span>
+                            <span class="nav-pill">AI LIVE</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="history.html" class="nav-link" id="navHistory">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </span>
+                            <span class="nav-label">Verification History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="report.html" class="nav-link" id="navReports">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </span>
+                            <span class="nav-label">Reports & Dossiers</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">SYSTEM & AUDIT</div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="#privacyNotice" class="nav-link" id="navPrivacy" onclick="showPrivacyModal(event)">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </span>
+                            <span class="nav-label">Security & Privacy</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="officer-card">
+                    <div class="officer-avatar">OFF</div>
+                    <div class="officer-info">
+                        <div class="officer-name">Agent I. Ahamad</div>
+                        <div class="officer-role">Border Control Officer #4092</div>
+                    </div>
+                </div>
+                <div class="system-status-indicator">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">ENGINES ONLINE (ELA / OCR-B / MRZ)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <!-- Header Bar -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Toggle navigation">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="header-breadcrumb">
+                        <span class="bc-app">AuthenSight</span>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current" id="breadcrumbCurrent">Document Screening Station</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <a href="screening.html" class="btn btn-primary btn-sm btn-quick-screen" id="btnQuickScreen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>Start New Screening</span>
+                    </a>
+                    <div class="badge-status-cluster">
+                        <span class="badge badge-outline">PORT 8000</span>
+                                            </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <div class="page-content-wrapper">
+                <div class="screening-page">
+                    <!-- Top Step Bar / Progress Indicator -->
+                    <div class="screening-header-bar">
+                        <div>
+                            <h2 class="page-title">Identity Document Screening Station</h2>
+                            <p class="page-subtitle">Upload or drop official credentials for multi-spectral AI forensic analysis and MRZ validation</p>
+                        </div>
+                        <div class="screening-status-pills">
+                            <span class="badge badge-outline"><span class="pulse-dot"></span> PIPELINE READY</span>
+                            <span class="badge badge-secondary">AIRPORT / BORDER GATE #04</span>
+                        </div>
+                    </div>
+
+                    <!-- Upload & Ingestion Section -->
+                    <div class="card upload-card" id="uploadCard">
+                        <div class="card-header-flex">
+                            <div>
+                                <h3 class="card-title">1. Document Ingestion</h3>
+                                <p class="card-desc">Supported: Passports (TD3), Visas (TD2), ID Cards (TD1), Residence Permits</p>
+                            </div>
+                            <!-- Preset Quick Selector -->
+                            <div class="preset-dropdown-container">
+                                <label for="samplePresetSelect" class="form-label-inline">Test Preset:</label>
+                                <select id="samplePresetSelect" class="form-select-sm" onchange="onPresetSelectChange(this.value)">
+                                    <option value="">-- Choose Test Document --</option>
+                                    <option value="genuine">Genuine Indian Passport (Clean Pass)</option>
+                                    <option value="tampered_dob">Tampered Date of Birth (Altered to 2004)</option>
+                                    <option value="photo_tampering">Photo Spliced & Face Mismatch</option>
+                                    <option value="invalid_mrz">Invalid MRZ Checksum Failure</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <form id="screeningForm" onsubmit="handleScreeningSubmit(event)">
+                            <div class="upload-options-row">
+                                <div class="form-group">
+                                    <label for="documentType" class="form-label">DOCUMENT CLASSIFICATION</label>
+                                    <select id="documentType" name="document_type" class="form-select">
+                                        <option value="Passport" selected>Passport (ICAO TD3)</option>
+                                        <option value="Visa">Visa Sticker (ICAO TD2)</option>
+                                        <option value="Identity Card">National Identity Card (TD1)</option>
+                                        <option value="Other">Other Official Travel Document</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Drag and Drop Dropzone -->
+                            <div class="dropzone-area" id="dropzoneArea" onclick="triggerFileInput()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                <input type="file" id="fileInput" name="file" accept="image/jpeg,image/png,image/webp,application/pdf" style="display: none;" onchange="handleFileChosen(this.files)">
+                                
+                                <div class="dropzone-content" id="dropzonePrompt">
+                                    <div class="dropzone-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    </div>
+                                    <div class="dropzone-text">
+                                        <p class="primary-text">Drag & drop document scan here, or <span class="browse-link">browse files</span></p>
+                                        <p class="secondary-text">PNG, JPG, JPEG, WEBP or PDF (Max 25MB). Auto-crops optical and MRZ zones.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Live Preview State -->
+                                <div class="dropzone-preview" id="dropzonePreview" style="display: none;">
+                                    <div class="preview-media-wrapper" id="previewMediaWrapper">
+                                        <img id="previewImage" src="" alt="Uploaded Document Preview">
+                                        <!-- Animated Scanning Laser Line -->
+                                        <div class="scanning-laser" id="scanningLaser" style="display: none;"></div>
+                                    </div>
+                                    <div class="preview-info-strip">
+                                        <div class="file-details">
+                                            <span class="file-name" id="previewFileName">passport_scan.jpg</span>
+                                            <span class="file-size" id="previewFileSize">1.4 MB</span>
+                                        </div>
+                                        <div class="file-actions">
+                                            <button type="button" class="btn btn-danger btn-xs" onclick="resetUpload(event)" title="Remove Document">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                <span>Remove</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Controls -->
+                            <div class="form-action-bar">
+                                <div class="security-privacy-reminder">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    <span>Images are audited in-memory with cryptographic checksum verification.</span>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-glow" id="startScreeningBtn" disabled>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                                    <span id="screeningBtnText">Start AI Screening</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Loading Screen / Progress Modal -->
+                    <div class="screening-loading-overlay" id="screeningLoading" style="display: none;">
+                        <div class="loading-modal-card">
+                            <div class="radar-scan-animation">
+                                <div class="radar-beam"></div>
+                                <div class="radar-ring"></div>
+                            </div>
+                            <h3 class="loading-title">Executing Multi-Vector AI Analysis...</h3>
+                            <p class="loading-subtitle" id="loadingProgressStep">Stage 1/4: Analyzing Image Error Levels & Splicing Edges...</p>
+                            <div class="loading-progress-bar">
+                                <div class="progress-bar-fill" id="loadingProgressBarFill"></div>
+                            </div>
+                            <div class="loading-checks-list">
+                                <span class="check-item active">● Neural OCR Digit Extraction</span>
+                                <span class="check-item" id="chkMrz">○ ICAO 9303 MRZ Modulus Checksum</span>
+                                <span class="check-item" id="chkForensics">○ Error Level Analysis (ELA)</span>
+                                <span class="check-item" id="chkFace">○ Biometric Face Likeness Match</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="results-container" id="resultsContainer" style="display: none;">
+                        <!-- Top Dossier Identification Banner -->
+                        <div class="dossier-banner" id="dossierBanner">
+                            <div class="dossier-meta-left">
+                                <span class="dossier-tag">SCREENING DOSSIER</span>
+                                <h2 class="dossier-id" id="resScreeningId">SCR-2026-00000</h2>
+                                <div class="dossier-sub">
+                                    <span id="resDocType">Passport</span> •
+                                    <span id="resTimestamp">2026-09-05 00:00:00</span> •
+                                    <span id="resSubjectName">Unknown Subject</span>
+                                </div>
+                            </div>
+                            <div class="dossier-meta-right">
+                                <div class="status-badge-lg" id="resStatusBadge">GENUINE</div>
+                            </div>
+                        </div>
+
+                        <!-- Risk Score & Explainability Row -->
+                        <div class="risk-overview-grid">
+                            <!-- Left: Large Visual Risk Score Indicator -->
+                            <div class="card risk-score-card" id="riskScoreCard">
+                                <div class="card-header-clean">
+                                    <span class="card-kicker">ASSESSMENT ENGINE</span>
+                                    <h3 class="card-title">Document Risk Score</h3>
+                                </div>
+                                <div class="risk-gauge-wrapper">
+                                    <div class="gauge-svg-container">
+                                        <svg viewBox="0 0 160 160" class="circular-chart">
+                                            <circle class="circle-bg" cx="80" cy="80" r="70" />
+                                            <circle class="circle-fill" id="riskCircleFill" cx="80" cy="80" r="70" />
+                                        </svg>
+                                        <div class="gauge-inner-content">
+                                            <span class="risk-number" id="riskScoreValue">--</span>
+                                            <span class="risk-percent-sign">%</span>
+                                            <span class="risk-level-tag" id="riskLevelTag">RISK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="risk-level-indicators">
+                                    <div class="level-badge level-low" id="badgeLowRisk">
+                                        <span class="level-dot"></span>
+                                        <span>0-39% LOW RISK</span>
+                                    </div>
+                                    <div class="level-badge level-medium" id="badgeMedRisk">
+                                        <span class="level-dot"></span>
+                                        <span>40-69% MEDIUM RISK</span>
+                                    </div>
+                                    <div class="level-badge level-high" id="badgeHighRisk">
+                                        <span class="level-dot"></span>
+                                        <span>70-100% HIGH RISK</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Explainability Card "WHY WAS THIS DOCUMENT FLAGGED?" -->
+                            <div class="card explainability-card" id="explainabilityCard">
+                                <div class="card-header-clean">
+                                    <span class="card-kicker">EXPLAINABLE AI EVIDENCE</span>
+                                    <h3 class="card-title">WHY WAS THIS DOCUMENT FLAGGED?</h3>
+                                </div>
+                                <p class="explainability-subtext">Direct evidential justifications synthesized from computer vision, MRZ mathematical checks, and biometric comparison:</p>
+                                <div class="evidence-list-container" id="evidenceList">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 5: Document Forensic Heatmap -->
+                        <div class="card heatmap-card" id="heatmapCard">
+                            <div class="card-header-flex">
+                                <div>
+                                    <span class="card-kicker">VISUAL FORENSIC AUDIT</span>
+                                    <h3 class="card-title">Interactive Document Forensic Heatmap</h3>
+                                    <p class="card-desc">Dynamic bounding-box overlays highlighting suspicious regions, text tampering, and anomalies</p>
+                                </div>
+                                <div class="heatmap-legend">
+                                    <span class="legend-chip legend-pass"><span class="chip-box"></span> PASS</span>
+                                    <span class="legend-chip legend-suspicious"><span class="chip-box"></span> SUSPICIOUS</span>
+                                    <span class="legend-chip legend-fail"><span class="chip-box"></span> FAIL</span>
+                                </div>
+                            </div>
+
+                            <div class="heatmap-viewport-container">
+                                <div class="heatmap-canvas-wrapper" id="heatmapCanvasWrapper">
+                                    <img id="heatmapSourceImage" src="" alt="Screened Document Heatmap" onload="renderHeatmapOverlays()">
+                                    <!-- Bounding Box Overlays Container -->
+                                    <div class="bounding-boxes-layer" id="boundingBoxesLayer"></div>
+                                </div>
+
+                                <!-- Region Inspector Panel -->
+                                <div class="heatmap-inspector" id="heatmapInspector">
+                                    <h4 class="inspector-title">Region Inspector</h4>
+                                    <p class="inspector-hint">Hover or click any highlighted region on the document to view forensic telemetry.</p>
+                                    <div class="inspector-details" id="inspectorDetails" style="display: none;">
+                                        <div class="inspector-header">
+                                            <span class="inspector-badge" id="inspBadge">STATUS</span>
+                                            <strong class="inspector-name" id="inspName">PHOTO ZONE</strong>
+                                        </div>
+                                        <p class="inspector-desc" id="inspDesc">Error Level Analysis indicates pixel compression variance.</p>
+                                        <div class="inspector-coords" id="inspCoords">X: 80, Y: 90 | 140 × 180 px</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3 Detailed Analysis Grids (4 Pillars) -->
+                        <div class="detailed-analysis-grid">
+                            <!-- OCR EXTRACTION -->
+                            <div class="card analysis-card">
+                                <div class="analysis-card-header">
+                                    <div class="card-icon icon-cyan">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="analysis-title">OCR Demographics Extraction</h4>
+                                        <span class="analysis-subtitle">Optical Text & Layout Parsing</span>
+                                    </div>
+                                </div>
+                                <div class="ocr-fields-table">
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Full Name:</span>
+                                        <strong class="ocr-val" id="ocrName">--</strong>
+                                    </div>
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Date of Birth:</span>
+                                        <strong class="ocr-val" id="ocrDob">--</strong>
+                                    </div>
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Document Number:</span>
+                                        <strong class="ocr-val font-mono" id="ocrDocNum">--</strong>
+                                    </div>
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Nationality:</span>
+                                        <strong class="ocr-val" id="ocrNat">--</strong>
+                                    </div>
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Gender:</span>
+                                        <strong class="ocr-val" id="ocrGender">--</strong>
+                                    </div>
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Issue Date:</span>
+                                        <strong class="ocr-val" id="ocrIssueDate">--</strong>
+                                    </div>
+                                    <div class="ocr-field-row">
+                                        <span class="ocr-label">Expiry Date:</span>
+                                        <strong class="ocr-val" id="ocrExpiryDate">--</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MRZ VALIDATION -->
+                            <div class="card analysis-card">
+                                <div class="analysis-card-header">
+                                    <div class="card-icon icon-blue">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="analysis-title">ICAO 9303 MRZ Validation</h4>
+                                        <span class="analysis-subtitle">Modulus 10 Weighted Verification</span>
+                                    </div>
+                                </div>
+                                <div class="validation-checklist" id="mrzChecklist">
+                                    <div class="check-row">
+                                        <span class="check-name">MRZ Detected</span>
+                                        <span class="status-indicator-tag" id="mrzStatusDetected">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Modulus 10 Checksum</span>
+                                        <span class="status-indicator-tag" id="mrzStatusChecksum">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Name Consistency</span>
+                                        <span class="status-indicator-tag" id="mrzStatusName">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Date Consistency</span>
+                                        <span class="status-indicator-tag" id="mrzStatusDate">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Document Number Match</span>
+                                        <span class="status-indicator-tag" id="mrzStatusDocNum">PASS</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DOCUMENT FORENSICS -->
+                            <div class="card analysis-card">
+                                <div class="analysis-card-header">
+                                    <div class="card-icon icon-purple">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="analysis-title">Document Forensics</h4>
+                                        <span class="analysis-subtitle">Physical & Digital Integrity Signals</span>
+                                    </div>
+                                </div>
+                                <div class="validation-checklist" id="forensicsChecklist">
+                                    <div class="check-row">
+                                        <span class="check-name">Text Manipulation</span>
+                                        <span class="status-indicator-tag" id="forensicStatusText">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Photo Manipulation</span>
+                                        <span class="status-indicator-tag" id="forensicStatusPhoto">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Copy-Paste Detection</span>
+                                        <span class="status-indicator-tag" id="forensicStatusCopy">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Image Inconsistencies</span>
+                                        <span class="status-indicator-tag" id="forensicStatusImage">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Compression Anomalies (ELA)</span>
+                                        <span class="status-indicator-tag" id="forensicStatusCompression">PASS</span>
+                                    </div>
+                                    <div class="check-row">
+                                        <span class="check-name">Security-Feature Analysis</span>
+                                        <span class="status-indicator-tag" id="forensicStatusSecurity">PASS</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FACE VERIFICATION -->
+                            <div class="card analysis-card">
+                                <div class="analysis-card-header">
+                                    <div class="card-icon icon-teal">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a8.38 8.38 0 0 1 13 0"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="analysis-title">Biometric Face Verification</h4>
+                                        <span class="analysis-subtitle">Portrait & Likeness Inspection</span>
+                                    </div>
+                                </div>
+                                <div class="face-verification-body">
+                                    <div class="face-score-row">
+                                        <div class="mini-circular-container">
+                                            <svg viewBox="0 0 100 100" class="mini-circular-chart">
+                                                <circle class="mini-circle-bg" cx="50" cy="50" r="42" />
+                                                <circle class="mini-circle-fill" id="faceCircleFill" cx="50" cy="50" r="42" />
+                                            </svg>
+                                            <span class="mini-score-text" id="faceScoreVal">--%</span>
+                                        </div>
+                                        <div class="face-metrics">
+                                            <div class="metric-line">
+                                                <span>Face Detected:</span>
+                                                <strong id="faceDetectedVal">YES</strong>
+                                            </div>
+                                            <div class="metric-line">
+                                                <span>Similarity Score:</span>
+                                                <strong id="faceSimVal">--%</strong>
+                                            </div>
+                                            <div class="metric-line">
+                                                <span>Immigration Threshold:</span>
+                                                <strong>75%</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="face-warnings-container" id="faceWarningContainer">
+                                        <div class="status-pill status-pill-success" id="faceStatusPill">
+                                            ✓ Biometric match within standard tolerances
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 6: Final Screening Report Action Card -->
+                        <div class="card report-action-card">
+                            <div class="report-action-inner">
+                                <div class="report-action-text">
+                                    <h3>Final Screening Dossier Ready</h3>
+                                    <p>Screening complete for <strong id="repSummarySubject">Subject</strong>. Official immigration screening report can be printed or exported.</p>
+                                </div>
+                                <div class="report-action-buttons">
+                                    <button class="btn btn-secondary" onclick="openPrintableReport()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                                        <span>Print Report</span>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="downloadReportJSON()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                        <span>Download JSON Dossier</span>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="startNewScreeningAction()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        <span>Start New Screening</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Footer -->
+            <footer class="app-footer">
+                <div class="footer-left">
+                    <p>© 2026 AuthenSight Security Systems. AI Fake Identity & Document Screening System.</p>
+                </div>
+                <div class="footer-right">
+                    <span class="disclaimer-text">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-tiny"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        AI-Assisted Screening Result: For statutory identity determination, corroborate with national consular registries.
+                    </span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div class="modal-backdrop" id="privacyModal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Security, Privacy & Legal Compliance Notice</span>
+                </div>
+                <button class="modal-close-btn" onclick="closePrivacyModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <h4>1. AI-Assisted Advisory Nature</h4>
+                <p>AuthenSight operates as an automated forensic advisory tool designed to surface evidence of physical and digital document tampering, MRZ format corruption, and biometric mismatches. Final immigration actions must comply with standard operational procedures.</p>
+                <h4>2. Data Protection & Ephemeral Ingestion</h4>
+                <p>Document biometric records and scanned graphics are processed ephemerally for screening verification. Uploaded identity images are stored in secure local sandboxes for officer audit and are not transferred to untrusted third-party cloud aggregators.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePrivacyModal()">Acknowledge & Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
